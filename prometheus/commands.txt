@@ -1,0 +1,30 @@
+export KUBECONFIG=/etc/kubernetes/admin.conf
+#reset kubernetes installation
+kubeadm reset
+iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+
+#install kubernetes
+kubeadm init --pod-network-cidr=10.244.0.0/16
+
+kubectl taint nodes --all node-role.kubernetes.io/master-
+kubectl taint nodes --all node.kubernetes.io/not-ready-
+
+/run/flannel/subnet.env
+
+FLANNEL_NETWORK=10.244.0.0/16
+FLANNEL_SUBNET=10.244.0.1/24
+FLANNEL_MTU=1450
+FLANNEL_IPMASQ=true
+
+kubectl create secret docker-registry regcred --docker-server=myregistrydomain.com --docker-username=cttc --docker-password=cttc
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
+
+kubectl apply -f metrics-service.yaml
+
+#prometheus
+kubectl create configmap prometheus-config --from-file prometheus.yml
+kubectl apply -f prometheus-deployment.yaml
+
+kubectl delete -f prometheus-deployment.yaml
+kubectl delete configmap prometheus-config
+
