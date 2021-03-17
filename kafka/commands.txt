@@ -1,0 +1,9 @@
+# based on: https://dzone.com/articles/ultimate-guide-to-installing-kafka-docker-on-kuber
+
+export KUBECONFIG=/etc/kubernetes/admin.conf
+
+kubectl apply -f zookeeper.yml
+kubectl apply -f kafka-service.yml
+(update kafka-broker.yml with load balancer ip)
+kubectl apply -f kafka-broker.yml
+
