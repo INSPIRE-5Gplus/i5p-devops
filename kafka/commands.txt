@@ -4,6 +4,5 @@ export KUBECONFIG=/etc/kubernetes/admin.conf
 
 kubectl apply -f zookeeper.yml
 kubectl apply -f kafka-service.yml
-(update kafka-broker.yml with load balancer ip)
 kubectl apply -f kafka-broker.yml
 
