@@ -6,3 +6,8 @@ kubectl apply -f zookeeper.yml
 kubectl apply -f kafka-service.yml
 kubectl apply -f kafka-broker.yml
 
+Usage example:
+#producer
+echo "HI3" | kafkacat -b 10.0.37.5:30031 -t admintome-test
+#consumer
+kafkacat -b 10.0.37.5:30031 -t admintome-test
